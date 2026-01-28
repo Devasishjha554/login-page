@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - MindfulAI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-dark: #080c14; /* Deepest background */
+            --bg-card: #111827; /* Card background */
+            --primary: #2563eb; /* MindfulAI Blue */
+            --primary-hover: #1d4ed8;
+            --text-white: #ffffff;
+            --text-gray: #9ca3af;
+            --input-bg: #1f2937;
+            --border-color: #374151;
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            /* Subtle radial gradient to mimic the glow in the screenshot */
+            background-image: radial-gradient(circle at 50% 0%, #1e2e4a 0%, var(--bg-dark) 60%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-white);
+            overflow: hidden;
+        }
+
+        /* Ambient Glow Blobs */
+        .glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Main Card */
+        .login-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 420px;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: rgba(17, 24, 39, 0.7); /* Semi-transparent */
+            backdrop-filter: blur(12px); /* Glass effect */
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Header Section */
+        .brand-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .logo i {
+            color: var(--primary);
+        }
+
+        .tagline {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        /* Private Badge (from screenshot) */
+        .badge-secure {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(37, 99, 235, 0.15);
+            color: #60a5fa;
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-top: 15px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            color: var(--text-gray);
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .form-input {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            padding: 12px 16px 12px 40px; /* Left padding for icon */
+            border-radius: 12px;
+            color: var(--text-white);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-gray);
+            font-size: 1rem;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-gray);
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .toggle-password:hover {
+            color: var(--text-white);
+        }
+
+        /* Actions (Remember me / Forgot) */
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            font-size: 0.85rem;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-gray);
+            cursor: pointer;
+        }
+
+        .checkbox-container input {
+            accent-color: var(--primary);
+            width: 16px;
+            height: 16px;
+        }
+
+        .forgot-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary), #1e40af);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -10px rgba(37, 99, 235, 0.5);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 24px 0;
+            color: var(--text-gray);
+            font-size: 0.8rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .divider span {
+            padding: 0 10px;
+        }
+
+        /* Social Login */
+        .social-login {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-social {
+            flex: 1;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-white);
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+
+        .btn-social:hover {
+            background: #2d3748;
+            border-color: #4b5563;
+        }
+
+        /* Footer */
+        .footer-text {
+            text-align: center;
+            margin-top: 24px;
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+
+        .footer-text a {
+            color: var(--text-white);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer-text a:hover {
+            text-decoration: underline;
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-card {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="glow"></div>
+
+    <div class="login-container">
+        <div class="login-card">
+            
+            <div class="brand-header">
+                <div class="logo">
+                    <i class="fa-solid fa-brain"></i>
+                    MindfulAI
+                </div>
+                <div class="badge-secure">
+                    <i class="fa-solid fa-lock"></i> PRIVATE & SECURE
+                </div>
+                <p class="tagline" style="margin-top: 10px;">Welcome back to your safe space.</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="email">Email Address</label>
+                    <div class="input-wrapper">
+                        <i class="fa-regular fa-envelope input-icon"></i>
+                        <input type="email" id="email" class="form-input" placeholder="you@example.com" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+                        <i class="fa-regular fa-eye toggle-password" id="togglePassword"></i>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <label class="checkbox-container">
+                        <input type="checkbox"> Remember me
+                    </label>
+                    <a href="#" class="forgot-link">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="btn-primary">Continue Journey</button>
+            </form>
+
+            <div class="divider">
+                <span>Or continue with</span>
+            </div>
+
+            <div class="social-login">
+                <button class="btn-social">
+                    <i class="fa-brands fa-google"></i> Google
+                </button>
+                <button class="btn-social">
+                    <i class="fa-brands fa-apple"></i> Apple
+                </button>
+            </div>
+
+            <div class="footer-text">
+                Don't have an account? <a href="#">Sign up</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Password Visibility Toggle
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
+
+        togglePassword.addEventListener('click', function (e) {
+            // Toggle the type attribute
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            
+            // Toggle the eye slash icon
+            this.classList.toggle('fa-eye-slash');
+            this.classList.toggle('fa-eye');
+        });
+
+        // Simple Form Submission Effect
+        const form = document.getElementById('loginForm');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = form.querySelector('.btn-primary');
+            const originalText = btn.innerText;
+            
+            // Loading state
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Authenticating...';
+            btn.style.opacity = '0.8';
+            
+            // Simulate API call
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Welcome Back';
+                btn.style.background = 'linear-gradient(135deg, #10b981, #059669)'; // Green success
+                
+                // Redirect simulation
+                setTimeout(() => {
+                    alert("Login Successful! Redirecting to dashboard...");
+                    // Reset button
+                    btn.innerText = originalText;
+                    btn.style.background = '';
+                    btn.style.opacity = '1';
+                }, 1000);
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
