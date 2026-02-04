@@ -311,7 +311,7 @@
             <div class="brand-header">
                 <div class="logo">
                     <i class="fa-solid fa-brain"></i>
-                    MindfulAI
+                    MannSathii
                 </div>
                 <div class="badge-secure">
                     <i class="fa-solid fa-lock"></i> PRIVATE & SECURE
@@ -344,7 +344,7 @@
                     <a href="#" class="forgot-link">Forgot Password?</a>
                 </div>
 
-                <button type="submit" class="btn-primary">Continue Journey</button>
+                <button type="submit" class="btn-primary" placeholder="">Continue Journey</button>
             </form>
 
             <div class="divider">
@@ -365,48 +365,35 @@
             </div>
         </div>
     </div>
+<script>
+    const form = document.getElementById('loginForm');
 
-    <script>
-        // Password Visibility Toggle
-        const togglePassword = document.querySelector('#togglePassword');
-        const password = document.querySelector('#password');
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
 
-        togglePassword.addEventListener('click', function (e) {
-            // Toggle the type attribute
-            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-            password.setAttribute('type', type);
-            
-            // Toggle the eye slash icon
-            this.classList.toggle('fa-eye-slash');
-            this.classList.toggle('fa-eye');
-        });
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const btn = form.querySelector('.btn-primary');
 
-        // Simple Form Submission Effect
-        const form = document.getElementById('loginForm');
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const btn = form.querySelector('.btn-primary');
-            const originalText = btn.innerText;
-            
-            // Loading state
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Authenticating...';
-            btn.style.opacity = '0.8';
-            
-            // Simulate API call
-            setTimeout(() => {
-                btn.innerHTML = '<i class="fa-solid fa-check"></i> Welcome Back';
-                btn.style.background = 'linear-gradient(135deg, #10b981, #059669)'; // Green success
-                
-                // Redirect simulation
-                setTimeout(() => {
-                    alert("Login Successful! Redirecting to dashboard...");
-                    // Reset button
-                    btn.innerText = originalText;
-                    btn.style.background = '';
-                    btn.style.opacity = '1';
-                }, 1000);
-            }, 1500);
-        });
-    </script>
+    if (!email || !password) {
+        alert("Please fill all details");
+        return;
+    }
+
+    // Loading state
+    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Authenticating...';
+    btn.style.opacity = '0.8';
+
+    // Simulate login success
+    setTimeout(() => {
+        // Save login state (demo)
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("userEmail", email);
+
+        // Redirect to dashboard
+        window.location.href = "dashboard.html";
+    }, 1500);
+});
+</script>
 </body>
 </html>
